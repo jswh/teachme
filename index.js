@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const server = require('http').createServer(app);
 const redis = require("redis").createClient({
-  url: 'redis://127.0.0.1:6379'
+  url: process.env.REDIS_URL
 });
 redis.on("error", function (error) {
   console.error(error);
