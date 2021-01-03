@@ -15,7 +15,7 @@ use Illuminate\Routing\Router;
 |
 */
 Route::group(['namespace' => 'Api'], function (Router $router) {
-
+    $router->get('/ping', 'ApiController@ping');
     $router->post('/register/principal', 'RegisterController@registerPrinciple');
 
     $router->post('/schools/{school}/teachers', 'RegisterController@registerTeacher');

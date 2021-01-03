@@ -23,4 +23,12 @@ class ApiController extends BaseController
     public function me() {
         return $this->success('ok', \Auth::user());
     }
+
+    public function ping() {
+        try {
+            \Cache::set('ping', 'pong');
+            var_dump(\Cache::get('ping'));
+        }
+        return $this->success();
+    }
 }
