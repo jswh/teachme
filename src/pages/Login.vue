@@ -60,7 +60,7 @@ export default class LoginRegister extends Vue {
     let params = {
         "grant_type": "password",
         "client_id": "3",
-        "client_secret": "g7X6P7tvc8uUE0jQ54nLmSoQpCg842dxz31dzidM",
+        "client_secret": "eWTzUUx6Gus2XMZcrGhxym8vdSwrbZWiT2ZtJIpD",
         "scope": this.scope,
         "username": this.username,
         "password": this.password,
