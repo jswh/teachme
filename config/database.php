@@ -1,5 +1,7 @@
 <?php
 $DATABASE_URL = parse_url(getenv("DATABASE_URL"));
+$REDIS_URL = parse_url(getenv('REDIS_URL'));
+
 
 return [
 
@@ -110,12 +112,11 @@ return [
         'client' => 'predis',
 
         'default' => [
-            'host' => getenv('REDIS_URL'),
-            'password' => env('REDIS_PASSWORD', null),
-            'port' => '',
+            'host' => $REDIS_URL['host'],
+            'password' => $REDIS_URL['pass'],
+            'port' => $REDIS_URL['port'],
             'database' => 0,
         ],
-
     ],
 
 ];
