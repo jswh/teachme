@@ -115,7 +115,6 @@ return [
             'host' => $REDIS_URL['host'],
             'password' => $REDIS_URL['pass'],
             'port' => $REDIS_URL['port'],
-            'database' => 0,
         ],
     ],
 
