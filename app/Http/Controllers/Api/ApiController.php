@@ -28,7 +28,9 @@ class ApiController extends BaseController
         try {
             \Cache::set('ping', 'pong');
             var_dump(\Cache::get('ping'));
+        } catch(\Throwable $e) {
+            var_dump($e);
         }
-        return $this->success();
+        return $this->success('ok');
     }
 }
