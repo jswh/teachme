@@ -74,12 +74,12 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { Observer } from 'mobx-vue'
-import store from '../mobx'
+import { Student } from 'src/components/models'
 
 @Observer
 @Component
 export default class PageTeacher extends Vue {
-  students: any[] = []
+  students: Student[] = []
   name = ''
   username = ''
   password = ''
@@ -88,23 +88,26 @@ export default class PageTeacher extends Vue {
 
   focusedOnly = false
 
-  constructor() {
+  constructor () {
     super()
     this.focusedOnly = false
     this.loadStudent()
   }
-  async loadStudent(focused=false) {
-    let url = `/api/schools/${this.$route.params.school_id}/students?focused=${focused}`
-    let res = await this.$axios.get(url)
+
+  async loadStudent (focused = false) {
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    const url = `/api/schools/${this.$route.params.school_id}/students?focused=${focused}`
+    const res = await this.$axios.get(url)
     this.students = res.data.data
   }
+
   @Watch('focusedOnly')
-  onFocuseChange() {
+  onFocuseChange () {
     this.loadStudent(this.focusedOnly)
   }
 
-  async createStudent() {
-    let res = await this.$axios.post(`/api/schools/${this.$route.params.school_id}/students`, {
+  async createStudent () {
+    const res = await this.$axios.post(`/api/schools/${this.$route.params.school_id}/students`, {
       name: this.name,
       username: this.username,
       password: this.password

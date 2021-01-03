@@ -16,7 +16,7 @@ const routes: RouteConfig[] = [
     path: '/',
     component: () => import('layouts/StudentLayout.vue'),
     children: [
-      { path: '/home', component: () => import('pages/StudentHome.vue') },
+      { path: '/home', component: () => import('pages/StudentHome.vue') }
     ]
   },
   {
@@ -26,7 +26,7 @@ const routes: RouteConfig[] = [
       { path: 'home', component: () => import('pages/Index.vue') },
       { path: 'school', component: () => import('pages/School.vue') },
       { path: 'school/:school_id/teacher', component: () => import('pages/Teacher.vue') },
-      { path: 'school/:school_id/student', component: () => import('pages/Student.vue') },
+      { path: 'school/:school_id/student', component: () => import('pages/Student.vue') }
     ]
   },
 

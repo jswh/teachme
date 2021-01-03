@@ -1,4 +1,3 @@
-import { deepDecorator } from 'mobx/lib/internal'
 import { route } from 'quasar/wrappers'
 import store from 'src/mobx'
 import VueRouter from 'vue-router'
@@ -23,8 +22,8 @@ export default route(function ({ Vue }) {
     base: process.env.VUE_ROUTER_BASE
   })
   Router.beforeEach((to, from, next) => {
-    if (to.fullPath.indexOf('school') == 1) {
-      if (to.params['school_id']) {
+    if (to.fullPath.indexOf('school') === 1) {
+      if (to.params.school_id) {
         store.school_id = to.params.school_id
         store.useSchoolMenu()
       } else {

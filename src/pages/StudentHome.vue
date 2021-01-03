@@ -37,9 +37,9 @@ import { Teacher } from 'components/models'
 
 @Observer
 @Component({
-  beforeCreate() {
-    let userInfo = store.user.userInfo
-    if (userInfo && userInfo.roles && userInfo.roles  != 'as_student') {
+  beforeCreate () {
+    const userInfo = store.user.userInfo
+    if (userInfo && userInfo.roles && userInfo.roles !== 'as_student') {
       this.$router.push('/login?scope=as_student')
     }
   }
@@ -47,23 +47,22 @@ import { Teacher } from 'components/models'
 export default class PageTeacher extends Vue {
   teachers: Teacher[] = []
 
-  constructor() {
+  constructor () {
     super()
     this.loadTeacher()
   }
 
-  async loadTeacher() {
-    let res = await this.$axios.get(`/api/schools/${store.user.userInfo?.school_id}/teachers`)
+  async loadTeacher () {
+    const res = await this.$axios.get(`/api/schools/${store.user.userInfo?.school_id as string}/teachers`)
     this.teachers = res.data.data
   }
 
-  async onFavoriteClick(teacher:Teacher) {
-    let url = `/api/relation/${teacher.id}}/focus`
-    let res;
+  async onFavoriteClick (teacher:Teacher) {
+    const url = `/api/relation/${teacher.id}}/focus`
     if (teacher.is_focused) {
-      res = await this.$axios.delete(url)
+      await this.$axios.delete(url)
     } else {
-      res = await this.$axios.post(url)
+      await this.$axios.post(url)
     }
     teacher.is_focused = !teacher.is_focused
   }

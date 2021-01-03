@@ -53,39 +53,40 @@
 </template>
 
 <script lang="ts">
-import { Todo, Meta, School } from 'components/models'
 import SchoolApply from 'components/SchoolApply.vue'
 import { Vue, Component } from 'vue-property-decorator'
 import { Observer } from 'mobx-vue'
-import AuthUser from 'src/mobx/auth-user'
-import store from '../mobx'
+import { School } from 'components/models'
 
 @Observer
 @Component({
-  components: { SchoolApply },
+  components: { SchoolApply }
 })
 export default class PageSchool extends Vue {
   dialog = false
   maximizedToggle = true
-  schools: any[] = []
-  constructor() {
+  schools: School[] = []
+  constructor () {
     super()
     this.loadSchool()
   }
-  async loadSchool() {
-    let res = await this.$axios.get('/api/schools')
+
+  async loadSchool () {
+    const res = await this.$axios.get('/api/schools')
     this.schools = res.data
-    this.dialog =  this.schools.length == 0
-  }
-  onApplyCancel() {
-    this.dialog = false
-  }
-  onApplySuccess(school: School) {
-    this.schools.push(school)
-    this.dialog=false
+    this.dialog = this.schools.length === 0
   }
 
-  onColClick(school: School) {
+  onApplyCancel () {
+    this.dialog = false
+  }
+
+  onApplySuccess (school: School) {
+    this.schools.push(school)
+    this.dialog = false
+  }
+
+  onColClick (school: School) {
     this.$router.push(`/school/${school.id}/teacher`)
   }
 }

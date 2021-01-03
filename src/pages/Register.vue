@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import {isValidEmail} from '../utils'
+import { isValidEmail } from '../utils'
 
 @Component({
   components: { }
@@ -54,21 +54,21 @@ export default class PageRegister extends Vue {
   recaptcha = ''
 
   isValidEmail = isValidEmail
-  async onSubmit() {
+  async onSubmit () {
     try {
-      let res = await this.$axios.post("/api/register/principal", {
-        "email": this.email,
-        "name":this.name,
-        "password": this.password,
-        "password_confirmation": this.password_confirmation
+      await this.$axios.post('/api/register/principal', {
+        email: this.email,
+        name: this.name,
+        password: this.password,
+        password_confirmation: this.password_confirmation
       })
-      let r = this.$router;
+      const r = this.$router
       this.$q.notify({
-        message: "register succuss",
-        position: "top-right",
+        message: 'register succuss',
+        position: 'top-right',
         timeout: 1000,
         color: 'green',
-        onDismiss() {
+        onDismiss () {
           r.push('/login')
         }
       })
@@ -76,10 +76,9 @@ export default class PageRegister extends Vue {
       this.$q.notify({
         message: e,
         color: 'red',
-        position: "top-right"
+        position: 'top-right'
       })
     }
-
   }
 }
 </script>

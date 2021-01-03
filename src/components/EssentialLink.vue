@@ -30,7 +30,7 @@ export default class EssentialLink extends Vue {
   @Prop({ type: String, default: '' }) readonly caption!: string;
   @Prop({ type: String, default: '#' }) readonly link!: string;
   @Prop({ type: String, default: '' }) readonly icon!: string;
-  menuClick() {
+  menuClick () {
     this.$router.push(this.link)
   }
 }

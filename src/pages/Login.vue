@@ -36,75 +36,70 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import {isValidEmail} from '../utils'
-import store from "../mobx";
-
-import { Observer } from "mobx-vue";
-import { Token } from 'src/components/models';
+import { isValidEmail } from '../utils'
+import store from '../mobx'
 
 @Component
 export default class LoginRegister extends Vue {
   username = ''
   password = ''
-  scope: any = ''
+  scope = ''
   recaptcha = ''
   isValidEmail = isValidEmail
 
-  constructor() {
+  constructor () {
     super()
-    if (this.$route.query['scope']) {
-      this.scope = this.$route.query.scope
+    if (this.$route.query.scope) {
+      this.scope = this.$route.query.scope as string
     }
   }
-  async onSubmit() {
-    let params = {
-        "grant_type": "password",
-        "client_id": "3",
-        "client_secret": "eWTzUUx6Gus2XMZcrGhxym8vdSwrbZWiT2ZtJIpD",
-        "scope": this.scope,
-        "username": this.username,
-        "password": this.password,
-      }
-    let err = (e: string) => {
-    this.$q.notify({
-      message: e,
-      color: 'red',
-      position: "top-right"
-    })
+
+  async onSubmit () {
+    const params = {
+      grant_type: 'password',
+      client_id: '3',
+      client_secret: 'TWJHCkFa7sYxY5OvyzBbAXBAu1mm31wIV2wfCCNh',
+      scope: this.scope,
+      username: this.username,
+      password: this.password
+    }
+    const err = (e: string) => {
+      this.$q.notify({
+        message: e,
+        color: 'red',
+        position: 'top-right'
+      })
     }
     try {
       localStorage.removeItem('token')
-      let res = await this.$axios.post("/oauth/token", params) as any
-      let r = this.$router;
+      const res = await this.$axios.post('/oauth/token', params) as any
+      const r = this.$router
       store.user.setAuthInfo(res)
       store.user.setScope(this.scope)
-      let refreshUserInfo = store.user.refresUserInfo()
-      let scope = this.scope
+      store.user.setHttpClient(this.$axios)
+      await store.user.refresUserInfo()
+      const scope = this.scope
 
-      let axios = this.$axios
+      const axios = this.$axios
 
       this.$q.notify({
-        message: "login succuss",
-        position: "top-right",
+        message: 'login succuss',
+        position: 'top-right',
         timeout: 1000,
         color: 'green',
-        onDismiss() {
-          refreshUserInfo.then(() => {
-            if (store.user.userInfo?.roles == 'as_principal') {
-              params['scope'] = 'as_principal'
-              axios.post("/oauth/token", params)
+        onDismiss () {
+          if (store.user.userInfo?.roles === 'as_principal') {
+            params.scope = 'as_principal'
+            axios.post('/oauth/token', params)
               .then((res: any) => {
                 store.user.setAuthInfo(res)
                 r.push('/school')
               })
-            } else if (scope == 'as_student') {
-              r.push('/home')
-            } else {
-              r.push(`/school/${store.user.userInfo?.school_id}/teacher`)
-            }
-          }).catch(e => {
-            err(e)
-          })
+          } else if (scope === 'as_student') {
+            r.push('/home')
+          } else {
+            r.push(`/school/${store.user.userInfo?.school_id as string}/teacher`)
+          }
         }
       })
     } catch (e) {

@@ -17,11 +17,8 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import {isValidEmail} from '../utils'
-import store from "../mobx";
 
-import { Observer } from "mobx-vue";
-import { School, Token } from 'src/components/models';
+import { School } from 'src/components/models'
 @Component({
   components: { }
 })
@@ -34,16 +31,16 @@ export default class SchoolApply extends Vue {
 
   async onSubmit() {
     try {
-      let res = await this.$axios.post("/api/schools", {
-        "name": this.name,
-        "description": this.description,
+      const res = await this.$axios.post('/api/schools', {
+        name: this.name,
+        description: this.description
       }) as any
       this.onSuccess(res.data)
     } catch (e) {
       this.$q.notify({
         message: e,
         color: 'red',
-        position: "top-right"
+        position: 'top-right'
       })
     }
   }

@@ -46,15 +46,14 @@
 
 <script lang="ts">
 import EssentialLink from 'components/EssentialLink.vue'
-import { Observer } from 'mobx-vue';
-import AuthUser from 'src/mobx/auth-user';
+import { Observer } from 'mobx-vue'
 
 import { Vue, Component } from 'vue-property-decorator'
 import store from '../mobx'
 
 @Observer
 @Component({
-  beforeCreate() {
+  beforeCreate () {
     if (!localStorage.getItem('token')) {
       this.$router.replace('/login')
     }
@@ -65,7 +64,7 @@ export default class MainLayout extends Vue {
   leftDrawerOpen = false;
   store = store
 
-  constructor() {
+  constructor () {
     super()
     store.user.setHttpClient(this.$axios)
     store.user.refresUserInfo()

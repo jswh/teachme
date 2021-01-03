@@ -63,17 +63,18 @@ export default class PageTeacher extends Vue {
   showLink = false
   inviteLink = ''
 
-  constructor() {
+  constructor () {
     super()
     this.loadTeacher()
   }
-  async loadTeacher() {
-    let res = await this.$axios.get(`/api/schools/${this.$route.params.school_id}/teachers`)
+
+  async loadTeacher () {
+    const res = await this.$axios.get(`/api/schools/${this.$route.params.school_id}/teachers`)
     this.teachers = res.data.data
   }
 
-  async createInviteUrl() {
-    let res = await this.$axios.get(`/api/schools/${this.$route.params.school_id}/invite_url`)
+  async createInviteUrl () {
+    const res = await this.$axios.get(`/api/schools/${this.$route.params.school_id}/invite_url`)
     this.inviteLink = res.data
     this.showLink = true
   }
