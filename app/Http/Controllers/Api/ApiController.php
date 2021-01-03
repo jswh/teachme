@@ -26,6 +26,7 @@ class ApiController extends BaseController
 
     public function ping() {
         try {
+            var_dump(getenv('REDIS_URL'));
             \Cache::set('ping', 'pong');
             var_dump(\Cache::get('ping'));
         } catch(\Throwable $e) {
