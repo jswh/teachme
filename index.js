@@ -9,7 +9,7 @@ redis.on("error", function (error) {
 });
 
 const socketRepo = {}
-const port = 3000
+const port = process.env.PORT || 3000
 const options = {
   cors: {
     origin: "*",
