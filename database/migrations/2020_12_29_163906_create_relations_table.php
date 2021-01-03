@@ -29,6 +29,6 @@ class CreateRelationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relation');
+        Schema::dropIfExists('relations');
     }
 }
