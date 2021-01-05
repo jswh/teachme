@@ -79,6 +79,12 @@ class StudentController extends AdminController
                 return $school ? $school->name : '-';
             });
         }
+        $form->saving(function (Form $form) {
+            $stuent = Student::find($form->id);
+            if (!$stuent || $form->password !== $stuent->password) {
+                $form->password = bcrypt($form->password);
+            }
+        });
         $form->text('name', __('Name'));
         $form->text('username', __('Username'));
         $form->password('password', __('Password'));

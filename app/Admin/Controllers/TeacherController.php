@@ -81,6 +81,12 @@ class TeacherController extends AdminController
                 return $school ? $school->name : '-';
             });
         }
+        $form->saving(function (Form $form) {
+            $teacher = Teacher::find($form->id);
+            if (!$teacher || $form->password !== $teacher->password) {
+                $form->password = bcrypt($form->password);
+            }
+        });
         $form->text('name', __('Name'));
         $form->email('email', __('Email'));
         $form->select('roles', __('Roles'))->options(ScopeService::selectOptions());
