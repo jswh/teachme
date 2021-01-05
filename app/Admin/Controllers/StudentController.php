@@ -53,8 +53,6 @@ class StudentController extends AdminController
         $show->field('school_id', __('School id'));
         $show->field('name', __('Name'));
         $show->field('username', __('Username'));
-        $show->field('password', __('Password'));
-        $show->field('remember_token', __('Remember token'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
