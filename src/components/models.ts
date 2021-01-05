@@ -10,6 +10,7 @@ export interface Meta {
 export interface Teacher {
   id: number;
   name: string;
+  chat_id: string;
   email: string;
   school_id: string;
   roles: string;
@@ -19,6 +20,7 @@ export interface Teacher {
 export interface Student {
   id: number;
   name: string;
+  chat_id: string;
   school_id: string
   roles: null;
   is_focued: boolean;

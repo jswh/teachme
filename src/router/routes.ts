@@ -5,6 +5,10 @@ const routes: RouteConfig[] = [
     component: () => import('pages/Login.vue')
   },
   {
+    path: '/withline',
+    component: () => import('pages/LineCallback.vue')
+  },
+  {
     path: '/register',
     component: () => import('pages/Register.vue')
   },

@@ -6,9 +6,7 @@
 <script lang="ts">
 import ExampleComponent from 'components/ClassComponent.vue'
 import { Vue, Component } from 'vue-property-decorator'
-import { Observer } from 'mobx-vue'
 
-@Observer
 @Component({
   components: { ExampleComponent }
 })

@@ -16,36 +16,43 @@
           <q-card>
             <q-card-section class="row justify-between text-h5">
               <strong>{{ props.row.name }}</strong>
-              <q-icon @click="() => onFavoriteClick(props.row)" :name="props.row.is_focused ? 'favorite' : 'favorite_border'" color="red"></q-icon>
+              <div class="action">
+                <q-icon @click="() => onFavoriteClick(props.row)" :name="props.row.is_focused ? 'favorite' : 'favorite_border'" color="red"></q-icon>
+                <q-icon @click="() => startChat(props.row)" name="message"></q-icon>
+              </div>
             </q-card-section>
             <q-separator />
             <q-card-section class="flex flex-center">
-              <div>{{ props.row.description }} g</div>
+              <div>{{ props.row.name }}</div>
             </q-card-section>
           </q-card>
         </div>
       </template>
     </q-table>
+    <div><chat-window ref="chatWindow"></chat-window></div>
   </q-page>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Observer } from 'mobx-vue'
-import store from '../mobx'
 import { Teacher } from 'components/models'
+import chatService from 'src/boot/chats'
+import ChatWindow from 'src/components/ChatWindow.vue'
 
-@Observer
 @Component({
   beforeCreate () {
-    const userInfo = store.user.userInfo
+    const userInfo = this.$store.state.AuthUser.userInfo
     if (userInfo && userInfo.roles && userInfo.roles !== 'as_student') {
       this.$router.push('/login?scope=as_student')
     }
-  }
+  },
+  components: { ChatWindow }
 })
-export default class PageTeacher extends Vue {
+export default class PageStudentHome extends Vue {
   teachers: Teacher[] = []
+  $refs!: {
+    chatWindow: ChatWindow
+  }
 
   constructor () {
     super()
@@ -53,7 +60,7 @@ export default class PageTeacher extends Vue {
   }
 
   async loadTeacher () {
-    const res = await this.$axios.get(`/api/schools/${store.user.userInfo?.school_id as string}/teachers`)
+    const res = await this.$axios.get(`/api/schools/${this.$store.state.AuthUser.userInfo?.school_id as string}/teachers`)
     this.teachers = res.data.data
   }
 
@@ -66,6 +73,13 @@ export default class PageTeacher extends Vue {
     }
     teacher.is_focused = !teacher.is_focused
   }
+
+  startChat(teacher: Teacher) {
+    chatService.addChat(teacher.chat_id, teacher.name)
+    chatService.refreshState()
+    this.$refs.chatWindow.current = teacher.chat_id
+    this.$refs.chatWindow.window = true
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -74,5 +88,8 @@ export default class PageTeacher extends Vue {
 }
 .q-pt-none {
   overflow-wrap: anywhere;
+}
+.action {
+  cursor pointer
 }
 </style>

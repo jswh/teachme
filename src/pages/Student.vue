@@ -73,10 +73,8 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import { Observer } from 'mobx-vue'
 import { Student } from 'src/components/models'
 
-@Observer
 @Component
 export default class PageTeacher extends Vue {
   students: Student[] = []

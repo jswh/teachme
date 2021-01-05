@@ -52,10 +52,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Observer } from 'mobx-vue'
 import { Teacher } from 'components/models'
 
-@Observer
 @Component
 export default class PageTeacher extends Vue {
   teachers: Teacher[] = []

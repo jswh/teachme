@@ -28,6 +28,11 @@
           <q-btn label="Submit" type="submit" color="primary"/>
           <q-btn label="Register" to="/register" color="primary" flat class="q-ml-sm" />
         </div>
+        <div>
+          <a :href="line_access_url" style="text-decoration: none;">
+            <q-btn label="Login with Line" color="secondary"/>
+          </a>
+        </div>
       </q-form>
       </q-card-section>
     </q-card>
@@ -36,8 +41,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { isValidEmail } from '../utils'
-import store from '../mobx'
+import { AppConfig, isValidEmail, serializeQuery } from '../utils'
 
 @Component
 export default class LoginRegister extends Vue {
@@ -46,6 +50,10 @@ export default class LoginRegister extends Vue {
   scope = ''
   recaptcha = ''
   isValidEmail = isValidEmail
+
+  get line_access_url() {
+    return 'https://access.line.me/oauth2/v2.1/authorize?' + serializeQuery(AppConfig.line_login)
+  }
 
   constructor () {
     super()
@@ -57,8 +65,8 @@ export default class LoginRegister extends Vue {
   async onSubmit () {
     const params = {
       grant_type: 'password',
-      client_id: '3',
-      client_secret: 'TWJHCkFa7sYxY5OvyzBbAXBAu1mm31wIV2wfCCNh',
+      client_id: AppConfig.oauth_client_id,
+      client_secret: AppConfig.oauth_client_key,
       scope: this.scope,
       username: this.username,
       password: this.password
@@ -74,10 +82,10 @@ export default class LoginRegister extends Vue {
       localStorage.removeItem('token')
       const res = await this.$axios.post('/oauth/token', params) as any
       const r = this.$router
-      store.user.setAuthInfo(res)
-      store.user.setScope(this.scope)
-      store.user.setHttpClient(this.$axios)
-      await store.user.refresUserInfo()
+      const store = this.$store
+      store.commit('setAuthInfo', res)
+      store.commit('setScope', res)
+      store.dispatch('refreshUserInfo')
       const scope = this.scope
 
       const axios = this.$axios
@@ -88,17 +96,17 @@ export default class LoginRegister extends Vue {
         timeout: 1000,
         color: 'green',
         onDismiss () {
-          if (store.user.userInfo?.roles === 'as_principal') {
+          if (store.state.AuthUser.userInfo.roles === 'as_principal') {
             params.scope = 'as_principal'
             axios.post('/oauth/token', params)
               .then((res: any) => {
-                store.user.setAuthInfo(res)
+                store.commit('setAuthInfo', res)
                 r.push('/school')
               })
           } else if (scope === 'as_student') {
             r.push('/home')
           } else {
-            r.push(`/school/${store.user.userInfo?.school_id as string}/teacher`)
+            r.push(`/school/${store.state.AuthUser.userInfo?.school_id as string}/teacher`)
           }
         }
       })

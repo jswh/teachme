@@ -55,10 +55,8 @@
 <script lang="ts">
 import SchoolApply from 'components/SchoolApply.vue'
 import { Vue, Component } from 'vue-property-decorator'
-import { Observer } from 'mobx-vue'
 import { School } from 'components/models'
 
-@Observer
 @Component({
   components: { SchoolApply }
 })

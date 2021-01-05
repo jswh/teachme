@@ -8,15 +8,14 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "deloy": "heroku static:deploy -a teachmespa"
+    "deploy": "quasar build -P && heroku static:deploy -a teachmespa"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
-    "mobx": "^5.0.0",
-    "mobx-vue": "^2.0.11",
     "quasar": "^1.0.0",
+    "socket.io-client": "^3.0.4",
     "vue-class-component": "^7.2.2",
     "vue-property-decorator": "^8.3.0"
   },

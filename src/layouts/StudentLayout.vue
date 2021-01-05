@@ -25,11 +25,8 @@
 </template>
 
 <script lang="ts">
-import { Observer } from 'mobx-vue'
 import { Vue, Component } from 'vue-property-decorator'
-import store from '../mobx'
 
-@Observer
 @Component({
   beforeCreate () {
     if (!localStorage.getItem('token')) {
@@ -39,12 +36,10 @@ import store from '../mobx'
 })
 export default class MainLayout extends Vue {
   leftDrawerOpen = false;
-  store = store
 
   constructor () {
     super()
-    store.user.setHttpClient(this.$axios)
-    store.user.refresUserInfo()
+    this.$store.dispatch('refreshUserInfo')
   }
 }
 </script>

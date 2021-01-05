@@ -1,6 +1,7 @@
 import { route } from 'quasar/wrappers'
-import store from 'src/mobx'
 import VueRouter from 'vue-router'
+import { Store } from 'vuex'
+import { StateInterface } from 'src/store'
 import routes from './routes'
 
 /*
@@ -8,7 +9,7 @@ import routes from './routes'
  * directly export the Router instantiation
  */
 
-export default route(function ({ Vue }) {
+export default route<Store<StateInterface>>(function ({ Vue }) {
   Vue.use(VueRouter)
 
   const Router = new VueRouter({
@@ -21,16 +22,6 @@ export default route(function ({ Vue }) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
-  Router.beforeEach((to, from, next) => {
-    if (to.fullPath.indexOf('school') === 1) {
-      if (to.params.school_id) {
-        store.school_id = to.params.school_id
-        store.useSchoolMenu()
-      } else {
-        store.usePrincipalMenu()
-      }
-    }
-    next()
-  })
+
   return Router
 })

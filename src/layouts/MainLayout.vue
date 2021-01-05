@@ -31,7 +31,7 @@
           Essential Links
         </q-item-label>
         <EssentialLink
-          v-for="link in store.menus"
+          v-for="link in menus"
           :key="link.title"
           v-bind="link"
         />
@@ -41,33 +41,36 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+    <chat-window></chat-window>
   </q-layout>
 </template>
 
 <script lang="ts">
 import EssentialLink from 'components/EssentialLink.vue'
-import { Observer } from 'mobx-vue'
 
 import { Vue, Component } from 'vue-property-decorator'
-import store from '../mobx'
+import ChatWindow from 'components/ChatWindow'
 
-@Observer
 @Component({
   beforeCreate () {
     if (!localStorage.getItem('token')) {
       this.$router.replace('/login')
     }
   },
-  components: { EssentialLink }
+  components: { EssentialLink , ChatWindow}
 })
 export default class MainLayout extends Vue {
   leftDrawerOpen = false;
-  store = store
+  get menus() {
+    return [
+      { title: 'Teacher' },
+      { title: 'Student' }
+    ]
+  }
 
   constructor () {
     super()
-    store.user.setHttpClient(this.$axios)
-    store.user.refresUserInfo()
+    this.$store.dispatch('refreshUserInfo')
   }
 }
 </script>
