@@ -38,7 +38,6 @@ export default class Server {
   }
   async onAuth(uid) {
     let app = this as unknown as { socket: Socket, server: Server }
-    await redis.setex(uid, 3600, 'verifie')
     let res = await redis.get(uid)
     if (res) {
       console.log('authed:' + uid + ':' + app.socket.id)
@@ -52,10 +51,10 @@ export default class Server {
     }
 
   }
-  async onMessage(from, to, text) {
-    console.log(from + '->' + to + ':' + text)
-    let toSocketId = await redis.get(to)
-    this.socketRepo[toSocketId].emit("message", from, text)
+  async onMessage(fromChatId, fromChatName, toChatId, toChatName, text) {
+    console.log(`${fromChatId}:${fromChatName}` + '->' + `${toChatId}:${toChatName}` + ' ' + text)
+    let toSocketId = await redis.get(toChatId)
+    this.socketRepo[toSocketId].emit("message", fromChatId, fromChatName, text)
   }
 
 

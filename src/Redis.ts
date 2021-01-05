@@ -1,7 +1,7 @@
 import { promisify } from 'util'
 import { createClient } from 'redis'
 const client = createClient({
-  url: process.env.REDIS_URL
+  url: process.env.REDIS_URL + '/0'
 });
 
 client.on("error", function (error) {
