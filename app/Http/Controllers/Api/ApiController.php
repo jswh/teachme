@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\ChatService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -21,7 +22,9 @@ class ApiController extends BaseController
     }
 
     public function me() {
-        return $this->success('ok', \Auth::user());
+        $user = \Auth::user();
+        ChatService::allowChat($user);
+        return $this->success('ok', $user);
     }
 
     public function ping() {

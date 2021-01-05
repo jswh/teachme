@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Services\ChatService;
+
 class MessageController extends ApiController
 {
     public function online() {
         $user = \Auth::user();
-        \Cache::set('msg:' . $user->id, time(), 30);
+        ChatService::allowChat($user);
 
+        return $this->success('authed');
     }
+
 }

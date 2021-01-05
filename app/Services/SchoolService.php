@@ -9,6 +9,17 @@ use Exception;
 class SchoolService {
     /** @var School */
     protected $school;
+
+    public static function selectSchoolOptions() {
+        $schoolOptions = [];
+        $schools = School::query()->select(['id', 'name'])->get();
+        foreach($schools as $school) {
+            $schoolOptions[$school->id] = $school->name;
+        }
+
+        return $schoolOptions;
+    }
+
     public static function createTeacher($params) {
         $params['password'] = bcrypt($params['password']);
         return Teacher::create($params);

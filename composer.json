@@ -40,7 +40,8 @@
     "extra": {
         "laravel": {
             "dont-discover": [
-                "laravel/passport"
+                "laravel/passport",
+                "littlechou/line-login"
             ]
         }
     },

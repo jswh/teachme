@@ -8,6 +8,13 @@ class ScopeService {
     const SCOPE_TEACHER = 'as_teacher';
     const SCOPE_STUDENT = 'as_student';
 
+    public static function selectOptions() {
+        return [
+            self::SCOPE_PRINCIPAL => self::SCOPE_PRINCIPAL,
+            self::SCOPE_TEACHER => self::SCOPE_TEACHER,
+        ];
+    }
+
     public static function registerPassportScope() {
         Passport::tokensCan([
             self::SCOPE_PRINCIPAL => 'the creator of school',

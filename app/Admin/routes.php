@@ -12,5 +12,9 @@ Route::group([
 ], function (Router $router) {
 
     $router->get('/', 'HomeController@index')->name('home');
+    $router->resource('schools', SchoolController::class);
+    $router->resource('teachers', TeacherController::class);
+    $router->resource('students', StudentController::class);
+    $router->resource('relations', RelationController::class);
 
 });
