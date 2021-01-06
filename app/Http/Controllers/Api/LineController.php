@@ -77,6 +77,6 @@ class LineController extends ApiController
 
     public function parseLineInfo($idToken) {
         JWT::$leeway = 60;
-        return JWT::decode($idToken, '1823d723381a08904ec3c19b864cc499', ['HS256']);
+        return JWT::decode($idToken, getenv('LINE_SECRET'), ['HS256']);
     }
 }
