@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Channels\LineChannel;
 use App\Channels\WsChannel;
 use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
@@ -31,7 +32,7 @@ class SimpleNotification extends Notification
      */
     public function via($notifiable)
     {
-        return [WsChannel::class];
+        return [WsChannel::class, LineChannel::class];
     }
 
     public function toWs($notifiable)
@@ -49,10 +50,20 @@ class SimpleNotification extends Notification
 
     public function toLine($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        $http = new Client();
+        var_dump($notifiable->line_user_id);
+        $http->post('https://api.line.me/v2/bot/message/push', [
+            'proxy' => getenv('proxy'),
+            'headers' => [
+                'Authorization' => 'Bearer ' . getenv('LINE_MESSAGE_TOKEN')
+            ],
+            'json' => [
+                'to' => $notifiable->line_user_id,
+                "messages" => [
+                    ["type" => "text", "text" => $this->text]
+                ]
+            ]
+        ]);
     }
 
 }

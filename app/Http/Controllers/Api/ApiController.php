@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Channels\LineChannel;
 use App\Models\Student;
 use App\Notifications\SimpleNotification;
 use App\Services\ChatService;
@@ -32,7 +33,8 @@ class ApiController extends BaseController
     public function ping() {
         /** @var Student */
         $student = Student::first();
-        $student->notify(new SimpleNotification('hello'));
+        $student->notify((new SimpleNotification('hello')));
+        $student->notify((new SimpleNotification('hello'))->via(LineChannel::class));
         try {
             \Cache::put('ping', 'pong', 1);
             var_dump(\Cache::pull('ping'));

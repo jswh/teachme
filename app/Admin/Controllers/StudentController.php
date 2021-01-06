@@ -32,6 +32,7 @@ class StudentController extends AdminController
         $grid->column('school.name', __('School'));
         $grid->column('name', __('Name'));
         $grid->column('username', __('Username'));
+        $grid->column('line_user_id', __('Line id'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'))->hide();
         $grid->column('deleted_at', __('Deleted at'))->hide();
@@ -53,6 +54,7 @@ class StudentController extends AdminController
         $show->field('school_id', __('School id'));
         $show->field('name', __('Name'));
         $show->field('username', __('Username'));
+        $show->field('line_user_id', __('Line id'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
@@ -85,6 +87,7 @@ class StudentController extends AdminController
         });
         $form->text('name', __('Name'));
         $form->text('username', __('Username'));
+        $form->text('line_user_id', __('Line id'))
         $form->password('password', __('Password'));
 
         return $form;

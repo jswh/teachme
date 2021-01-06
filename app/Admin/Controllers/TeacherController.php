@@ -34,6 +34,7 @@ class TeacherController extends AdminController
         $grid->column('name', __('Name'));
         $grid->column('email', __('Email'));
         $grid->column('roles', __('Roles'));
+        $grid->column('line_user_id', __('Line id'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'))->hide();
         $grid->column('deleted_at', __('Deleted at'))->hide();
@@ -56,6 +57,7 @@ class TeacherController extends AdminController
         $show->field('name', __('Name'));
         $show->field('email', __('Email'));
         $show->field('roles', __('Roles'));
+        $show->field('line_user_id', __('Line id'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
         $show->field('deleted_at', __('Deleted at'));
@@ -88,6 +90,7 @@ class TeacherController extends AdminController
         $form->text('name', __('Name'));
         $form->email('email', __('Email'));
         $form->select('roles', __('Roles'))->options(ScopeService::selectOptions());
+        $form->text('line_user_id', __('Line id'));
         $form->password('password', __('Password'));
 
         return $form;
