@@ -17,7 +17,10 @@ export default class Server {
         methods: ["GET", "POST"]
       }
     };
-    this.express = express()
+    const app = express()
+    app.use(express.json()) // for parsing application/json
+    app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+    this.express = app
     this.httpServer = createServer(this.express)
     this.socketio = require('socket.io')(this.httpServer, options)
 
@@ -57,13 +60,26 @@ export default class Server {
     this.socketRepo[toSocketId].emit("message", fromChatId, fromChatName, text)
   }
 
-
+  async sendNotification(toChatId, message) {
+    let toSocketId = await redis.get(toChatId)
+    if (this.socketRepo[toSocketId]) {
+      console.log('notification->' + `${toChatId}` + ' ' + message)
+      this.socketRepo[toSocketId].emit("notification", message)
+    }
+  }
 
   start() {
     const port = process.env.PORT || 3000
 
     this.express.get('/ping', () => {
       return 'pong!'
+    })
+
+    this.express.post('/notification', (req, res) => {
+      if (req.body.secret === process.env.NOTIFICATION_SECRET) {
+        this.sendNotification(req.body.to_chat_id, req.body.message)
+      }
+      res.send('ok')
     })
 
     this.httpServer.listen(port, () => {
