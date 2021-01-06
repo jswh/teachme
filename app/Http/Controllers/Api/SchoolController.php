@@ -48,10 +48,10 @@ class SchoolController extends ApiController
         $this->checkSchoolUser($school);
         if ($request->input('focused', 'false') == 'true') {
             $teacher = \Auth::user();
-            $relations = Relation::where('to_id', $teacher->id)->simplePaginate()->toArray();
+            $relations = Relation::where('to', $teacher->id)->simplePaginate()->toArray();
             $studentIds = [];
             foreach($relations['data'] as $relation) {
-                $studentIds[] = $relation['from_id'];
+                $studentIds[] = $relation['from'];
             }
             $relations['data'] = Student::whereIn('id', $studentIds)->get();
             $students = $relations;
