@@ -65,7 +65,6 @@ class SimpleNotification extends Notification
     public function toLine($notifiable)
     {
         $http = new Client();
-        var_dump($notifiable->line_user_id);
         $http->post('https://api.line.me/v2/bot/message/push', [
             'proxy' => getenv('proxy'),
             'headers' => [
