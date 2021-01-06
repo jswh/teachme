@@ -5,6 +5,7 @@ use App\Models\School;
 use App\Models\Student;
 use App\Models\Teacher;
 use Exception;
+use Illuminate\Support\Facades\Request;
 
 class SchoolService {
     /** @var School */
@@ -47,7 +48,7 @@ class SchoolService {
     }
 
     public function createInviteUrl() {
-        return \url('/#/school/' . $this->school->id . '/invite/' . $this->makeToken());
+        return trim(Request::server('HTTP_REFERER'), '/') .'/school/' . $this->school->id . '/invite/' . $this->makeToken();
     }
 
     public function registerTeacher($profile, $token) {

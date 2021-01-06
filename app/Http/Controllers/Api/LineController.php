@@ -8,6 +8,7 @@ use App\Services\ScopeService;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class LineController extends ApiController
 {
@@ -18,7 +19,7 @@ class LineController extends ApiController
             'form_params' => [
                 'grant_type'    => 'authorization_code',
                 'code'          => $code,
-                'redirect_uri'  => 'http://localhost:8080/withline',
+                'redirect_uri'  => trim(FacadesRequest::server('HTTP_REFERER'), '/') .  '/withline',
                 'client_id'     => '1655551351',
                 'client_secret' => getenv('LINE_SECRET')
             ]
