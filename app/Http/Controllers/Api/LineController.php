@@ -36,7 +36,7 @@ class LineController extends ApiController
         /** @var Teacher | Student */
         $user = \Auth::user();
         if ($user instanceof Teacher) {
-            $bindTeacher = Teacher::where('line_user_id', $lineUserId);
+            $bindTeacher = Teacher::where('line_user_id', $lineUserId)->first();
             if ($bindTeacher && $bindTeacher->id != $user->id) {
                 throw new \Exception('can only bind one teacher');
             }
