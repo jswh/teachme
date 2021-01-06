@@ -19,8 +19,8 @@ class LineController extends ApiController
                 'grant_type'    => 'authorization_code',
                 'code'          => $code,
                 'redirect_uri'  => 'http://localhost:8080/#/withline',
-                'client_id'     => '1655544448',
-                'client_secret' => '1823d723381a08904ec3c19b864cc499'
+                'client_id'     => '1655549943',
+                'client_secret' => getenv('LINE_SECRET')
             ]
         ]);
         $body = (string) $response->getBody();
