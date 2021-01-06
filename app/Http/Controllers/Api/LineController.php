@@ -18,7 +18,7 @@ class LineController extends ApiController
             'form_params' => [
                 'grant_type'    => 'authorization_code',
                 'code'          => $code,
-                'redirect_uri'  => 'http://localhost:8080/#/withline',
+                'redirect_uri'  => 'http://localhost:8080/withline',
                 'client_id'     => '1655551351',
                 'client_secret' => getenv('LINE_SECRET')
             ]
