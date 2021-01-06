@@ -25,8 +25,9 @@ Route::group(['namespace' => 'Api'], function (Router $router) {
     $router->post('/schools/{school}/teachers', 'RegisterController@registerTeacher');
 
     $router->group(['middleware' => 'auth:api'], function (Router $router) {
-        $router->put('/line/binding', 'LineController@bind');
+        $router->post('/nofitication', 'MessageController@studentNotification');
         $router->get('/me', 'ApiController@me');
+        $router->put('/line/binding', 'LineController@bind');
         $router->get('/schools/{school}/teachers', 'SchoolController@getTeachers');
         $router->group(['middleware' => Scope::middlewarePrincipal()], function (Router $router) {
             $router->get('/schools', 'SchoolController@getSchools');
