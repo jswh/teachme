@@ -34,7 +34,7 @@ class ApiController extends BaseController
         /** @var Student */
         $student = Student::first();
         $student->notify((new SimpleNotification('hello')));
-        $student->notify((new SimpleNotification('hello'))->via(LineChannel::class));
+        $student->notify((new SimpleNotification('hello'))->viaLine());
         try {
             \Cache::put('ping', 'pong', 1);
             var_dump(\Cache::pull('ping'));

@@ -32,7 +32,21 @@ class SimpleNotification extends Notification
      */
     public function via($notifiable)
     {
-        return [WsChannel::class, LineChannel::class];
+        return $this->via;
+    }
+
+    protected $via = [WsChannel::class];
+
+    public function viaWs() {
+        $this->via = [WsChannel::class];
+
+        return $this;
+    }
+
+    public function viaLine() {
+        $this->via = [LineChannel::class];
+
+        return $this;
     }
 
     public function toWs($notifiable)
