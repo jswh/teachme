@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Student;
+use App\Notifications\SimpleNotification;
 use App\Services\ChatService;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -28,6 +30,9 @@ class ApiController extends BaseController
     }
 
     public function ping() {
+        /** @var Student */
+        $student = Student::first();
+        $student->notify(new SimpleNotification('hello'));
         try {
             \Cache::put('ping', 'pong', 1);
             var_dump(\Cache::pull('ping'));

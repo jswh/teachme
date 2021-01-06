@@ -14,7 +14,7 @@ class LineController extends ApiController
     public function token($code) {
         $http = new Client();
         $response = $http->post('https://api.line.me/oauth2/v2.1/token', [
-            'proxy' => getenv('http_proxy'),
+            'proxy' => getenv('proxy'),
             'form_params' => [
                 'grant_type'    => 'authorization_code',
                 'code'          => $code,

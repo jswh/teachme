@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Models\Traits\CanChat;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 class Student extends Authenticatable
 {
-    use HasApiTokens;
+    use HasApiTokens, Notifiable;
     use CanChat;
 
     protected $fillable = ['name', 'username', 'password', 'school_id'];
