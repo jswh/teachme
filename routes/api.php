@@ -18,14 +18,14 @@ Route::group(['namespace' => 'Api'], function (Router $router) {
     $router->get('/ping', 'ApiController@ping');
 
     $router->get('/line/token/{code}', 'LineController@Token');
-    $router->post('/line', 'LineController@Login');
-    $router->put('/line', 'LineController@Bind');
+    $router->post('/line/bindings', 'LineController@getBindings');
 
     $router->post('/register/principal', 'RegisterController@registerPrinciple');
 
     $router->post('/schools/{school}/teachers', 'RegisterController@registerTeacher');
 
     $router->group(['middleware' => 'auth:api'], function (Router $router) {
+        $router->put('/line/binding', 'LineController@bind');
         $router->get('/me', 'ApiController@me');
         $router->get('/schools/{school}/teachers', 'SchoolController@getTeachers');
         $router->group(['middleware' => Scope::middlewarePrincipal()], function (Router $router) {
