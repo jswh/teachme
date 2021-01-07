@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="fullscreen bg-blue text-white text-center q-pa-md flex flex-center" v-if="bindings.length < 1">
-      login...
+      loading...
     </div>
     <div class="q-pa-md row items-start q-gutter-md">
       <q-card class="my-card">
@@ -84,6 +84,7 @@ export default class PageLineCallback extends Vue {
   login(binding: any) {
     localStorage.setItem('token', binding.access_token)
     this.$store.commit('setUserInfo', binding.user)
+    sessionStorage.removeItem('line_id_token')
     if (binding.type === 'teacher') {
       this.$router.push(`/school/${binding.user.school_id as string}/teacher`)
     } else {

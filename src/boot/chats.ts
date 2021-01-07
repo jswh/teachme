@@ -92,6 +92,9 @@ export class ChatService {
     if (chatId === this.user?.chat_id) {
       return
     }
+    if (!this.chats) {
+      this.chats = {}
+    }
     if (!this.chats[chatId]) {
       this.chats[chatId] = {
         with: {

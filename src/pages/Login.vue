@@ -53,7 +53,8 @@ export default class LoginRegister extends Vue {
   dologin = false
 
   get line_access_url() {
-    return 'https://access.line.me/oauth2/v2.1/authorize?' + serializeQuery(AppConfig.line_login)
+    const q = serializeQuery(AppConfig.line_login) + '&redirect_uri=' + window.location.protocol + '//' + window.location.host + '/withline'
+    return 'https://access.line.me/oauth2/v2.1/authorize?' + q
   }
 
   get idToken() {

@@ -10,7 +10,6 @@ export const AppConfig = {
   line_login: {
     response_type: 'code',
     client_id: '1655551351',
-    redirect_uri: 'http://localhost:8080/withline',
     state: 'asdferh',
     scope: 'profile openid'
   }
