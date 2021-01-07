@@ -20,7 +20,7 @@ const routes: RouteConfig[] = [
     path: '/',
     component: () => import('layouts/StudentLayout.vue'),
     children: [
-      { path: '/home', component: () => import('pages/StudentHome.vue') }
+      { path: '', component: () => import('pages/StudentHome.vue') }
     ]
   },
   {

@@ -20,6 +20,7 @@ export class ChatService {
   connected = false
   socket?: Socket
   store?: Store<any>
+  onNotification!: any
 
   setStore(store: Store<any>) {
     this.store = store
@@ -40,6 +41,7 @@ export class ChatService {
     socket.on('message', this.onRecieveMessage.bind(this))
     socket.on('is_auth_ok', this.onAuth.bind(this))
     socket.on('connect', this.onConnect.bind(this))
+    socket.on('notification', this.onNotification)
   }
 
   onConnect() {
@@ -61,6 +63,7 @@ export class ChatService {
       console.log('authed')
       this.sendMessage(this.user?.chat_id, this.user?.name, 'talk to self')
       try {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const chats = JSON.parse(localStorage.getItem('chats:' + this.user.chat_id)!)
         this.chats = chats
         this.refreshState()
@@ -116,6 +119,7 @@ export class ChatService {
 
   refreshState() {
     const chats = JSON.stringify(this.chats)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     localStorage.setItem('chats:' + this.user!.chat_id, chats)
     // eslint-disable-next-line no-unused-expressions
     this.store?.commit('refreshChats', JSON.parse(chats))

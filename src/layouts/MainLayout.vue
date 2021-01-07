@@ -14,6 +14,8 @@
         <q-toolbar-title>
           Teache Me
         </q-toolbar-title>
+
+        <q-btn flat @click="logout">Logout</q-btn>
       </q-toolbar>
     </q-header>
 
@@ -46,10 +48,9 @@
 </template>
 
 <script lang="ts">
-import EssentialLink from 'components/EssentialLink.vue'
-
 import { Vue, Component } from 'vue-property-decorator'
-import ChatWindow from 'components/ChatWindow'
+import ChatWindow from 'src/components/ChatWindow.vue'
+import EssentialLink from 'components/EssentialLink.vue'
 
 @Component({
   beforeCreate () {
@@ -57,20 +58,40 @@ import ChatWindow from 'components/ChatWindow'
       this.$router.replace('/login')
     }
   },
-  components: { EssentialLink , ChatWindow}
+  components: { EssentialLink, ChatWindow }
 })
 export default class MainLayout extends Vue {
   leftDrawerOpen = false;
+
   get menus() {
-    return [
-      { title: 'Teacher' },
-      { title: 'Student' }
-    ]
+    const userInfo = this.$store.state.AuthUser.userInfo
+    const school_id: string = this.$route.params.school_id || userInfo.school_id
+    const is_principal = userInfo.roles === 'as_principal'
+    if (!school_id && is_principal) {
+      return [
+        { title: 'School', link: '/school' }
+      ]
+    } else if (is_principal) {
+      return [
+        { title: 'School', link: '/school' },
+        { title: 'Teacher', link: `/school/${school_id}/teacher` },
+        { title: 'Student', link: `/school/${school_id}/student` }
+      ]
+    } else {
+      return [
+        { title: 'Teacher', link: `/school/${school_id}/teacher` },
+        { title: 'Student', link: `/school/${school_id}/student` }
+      ]
+    }
   }
 
   constructor () {
     super()
     this.$store.dispatch('refreshUserInfo')
+  }
+
+  logout() {
+    window.location.href = '/login'
   }
 }
 </script>

@@ -13,7 +13,7 @@
     <template v-slot:top>
       <div class="row justify-between table-header">
         <div class="text-h6">Teachers</div>
-        <div>
+        <div v-if="$store.state.AuthUser.userInfo.roles === 'as_principal'">
           <q-btn style="background: #FF0080; color: white" label="Invite Teacher" @click="createInviteUrl" />
         </div>
       </div>

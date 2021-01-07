@@ -12,6 +12,15 @@ export default class App extends Vue {
   constructor() {
     super()
     chatService.setStore(this.$store)
+    chatService.onNotification = (msg: string) => {
+      this.$q.notify({
+        message: msg,
+        position: 'top-right',
+        type: 'info',
+        timeout: 30000,
+        closeBtn: true
+      })
+    }
   }
 }
 </script>

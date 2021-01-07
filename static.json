@@ -1,5 +1,11 @@
 {
   "root": "dist/spa",
   "clean_urls": false,
-  "error_page": "/404"
+  "error_page": "/404",
+  "routes": {
+      "/css/*": "/css/",
+      "/js/*": "/js/",
+      "/fonts/*": "/js/",
+      "/**": "index.html"
+    }
 }

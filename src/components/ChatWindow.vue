@@ -13,7 +13,7 @@
     <template v-slot:after>
       <div>
         <q-btn round flat icon="close" style="color: #FF0080"  class="close-window-btn" @click="() => window = false"/>
-        <div class="message-panel" v-if="current !== 0">
+        <div class="message-panel" v-if="current !== ''">
           <q-tab-panels
             style="height:350px;overflow:auto;"
             v-model="current"

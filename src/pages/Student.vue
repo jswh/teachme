@@ -12,15 +12,15 @@
     >
     <template v-slot:top>
       <div class="row justify-between table-header">
-        <div class="text-h6">Students</div>
-        <q-toggle v-model="focusedOnly" label="only focused"/>
-        <div>
+        <div class="text-h6">Students <span v-if="isPrincipal" class="helper">click student to send notification</span></div>
+        <q-toggle v-if="!isPrincipal" v-model="focusedOnly" label="only focused"/>
+        <div v-if="isPrincipal">
           <q-btn style="background: #FF0080; color: white" label="Create Student" @click="() => showDialog = true" />
         </div>
       </div>
       </template>
        <template v-slot:body="props">
-        <q-tr :props="props">
+        <q-tr :props="props" class="student-line" @click="() => startNotification(props.row)">
           <q-td
             v-for="col in props.cols"
             :key="col.name"
@@ -68,6 +68,25 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="showSendDialog">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">
+            Send notification to {{this.toSendUser ? this.toSendUser.name: ''}}
+          </div>
+        </q-card-section>
+        <q-separator />
+        <q-card-section>
+          <q-form>
+            <q-input v-model="toSendMessage" type="textarea" outlined label="message"></q-input>
+          </q-form>
+        </q-card-section>
+        <q-separator />
+        <q-card-actions align="right">
+          <q-btn :loading="sending" @click="sendNotification" flat>send</q-btn>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -83,8 +102,12 @@ export default class PageTeacher extends Vue {
   password = ''
 
   showDialog = false
-
   focusedOnly = false
+
+  toSendUser?: Student | null = null
+  showSendDialog = false
+  toSendMessage = ''
+  sending = false
 
   constructor () {
     super()
@@ -92,11 +115,42 @@ export default class PageTeacher extends Vue {
     this.loadStudent()
   }
 
+  get isPrincipal() {
+    return this.$store.state.AuthUser.userInfo.roles === 'as_principal'
+  }
+
   async loadStudent (focused = false) {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     const url = `/api/schools/${this.$route.params.school_id}/students?focused=${focused}`
     const res = await this.$axios.get(url)
     this.students = res.data.data
+  }
+
+  startNotification(student: Student) {
+    if (this.isPrincipal) {
+      this.toSendUser = student
+      this.showSendDialog = true
+    } else {
+      console.log('not principal')
+    }
+  }
+
+  async sendNotification() {
+    this.sending = true
+    try {
+      await this.$axios.post('/api/notification', {
+        to: this.toSendUser?.id,
+        message: this.toSendMessage
+      })
+      this.toSendUser = null
+      this.toSendMessage = ''
+      this.showSendDialog = false
+      this.sending = false
+      this.$q.notify('send success')
+    } catch (e) {
+      this.sending = false
+      this.$q.notify('send error')
+    }
   }
 
   @Watch('focusedOnly')
@@ -121,5 +175,12 @@ export default class PageTeacher extends Vue {
 }
 .q-pt-none {
   overflow-wrap: anywhere;
+}
+.student-line {
+  cursor pointer
+}
+.helper {
+  font-size 12px
+  font-weight 400
 }
 </style>

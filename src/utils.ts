@@ -9,8 +9,8 @@ export const AppConfig = {
   // api_base: 'http://127.0.0.1:8000',
   line_login: {
     response_type: 'code',
-    client_id: '1655544448',
-    redirect_uri: 'http://localhost:8080/#/withline',
+    client_id: '1655551351',
+    redirect_uri: 'http://localhost:8080/withline',
     state: 'asdferh',
     scope: 'profile openid'
   }

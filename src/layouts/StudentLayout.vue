@@ -12,10 +12,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Teacherme
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn flat @click="logout">Logout</q-btn>
       </q-toolbar>
     </q-header>
     <q-page-container>
@@ -40,6 +40,10 @@ export default class MainLayout extends Vue {
   constructor () {
     super()
     this.$store.dispatch('refreshUserInfo')
+  }
+
+  logout() {
+    window.location.href = '/login'
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <div class="q-pa-md row items-start q-gutter-md">
     <q-card class="my-card">
       <q-card-section>
-        <div class="text-h6">Login</div>
+        <div class="text-h6">Login <span v-if="idToken">And Bind Line</span></div>
       </q-card-section>
       <q-separator />
       <q-card-section>
@@ -25,10 +25,10 @@
         <q-radio v-model="scope" val="as_teacher" label="I am teacher" />
     </div>
         <div>
-          <q-btn label="Submit" type="submit" color="primary"/>
+          <q-btn :loading="dologin" label="Submit" type="submit" color="primary"/>
           <q-btn label="Register" to="/register" color="primary" flat class="q-ml-sm" />
         </div>
-        <div>
+        <div v-if="!idToken">
           <a :href="line_access_url" style="text-decoration: none;">
             <q-btn label="Login with Line" color="secondary"/>
           </a>
@@ -50,9 +50,14 @@ export default class LoginRegister extends Vue {
   scope = ''
   recaptcha = ''
   isValidEmail = isValidEmail
+  dologin = false
 
   get line_access_url() {
     return 'https://access.line.me/oauth2/v2.1/authorize?' + serializeQuery(AppConfig.line_login)
+  }
+
+  get idToken() {
+    return sessionStorage.getItem('line_id_token')
   }
 
   constructor () {
@@ -63,7 +68,8 @@ export default class LoginRegister extends Vue {
   }
 
   async onSubmit () {
-    const params = {
+    this.dologin = true
+    const params: any = {
       grant_type: 'password',
       client_id: AppConfig.oauth_client_id,
       client_secret: AppConfig.oauth_client_key,
@@ -71,7 +77,9 @@ export default class LoginRegister extends Vue {
       username: this.username,
       password: this.password
     }
+
     const err = (e: string) => {
+      this.dologin = false
       this.$q.notify({
         message: e,
         color: 'red',
@@ -89,6 +97,13 @@ export default class LoginRegister extends Vue {
       const scope = this.scope
 
       const axios = this.$axios
+      const id_token = sessionStorage.getItem('line_id_token')
+      if (id_token) {
+        await this.$axios.put('/api/line/binding', {
+          id_token
+        })
+        sessionStorage.removeItem('line_id_token')
+      }
 
       this.$q.notify({
         message: 'login succuss',
@@ -104,7 +119,7 @@ export default class LoginRegister extends Vue {
                 r.push('/school')
               })
           } else if (scope === 'as_student') {
-            r.push('/home')
+            r.push('/')
           } else {
             r.push(`/school/${store.state.AuthUser.userInfo?.school_id as string}/teacher`)
           }
