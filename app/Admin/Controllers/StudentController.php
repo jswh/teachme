@@ -2,6 +2,7 @@
 
 namespace App\Admin\Controllers;
 
+use App\Admin\Actions\Student\Notification;
 use App\Models\School;
 use \App\Models\Student;
 use App\Services\SchoolService;
@@ -36,6 +37,9 @@ class StudentController extends AdminController
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'))->hide();
         $grid->column('deleted_at', __('Deleted at'))->hide();
+        $grid->actions(function ($actions) {
+            $actions->add(new Notification);
+        });
 
         return $grid;
     }
