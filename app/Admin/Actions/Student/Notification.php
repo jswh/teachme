@@ -5,6 +5,7 @@ namespace App\Admin\Actions\Student;
 use App\Models\Student;
 use App\Notifications\SimpleNotification;
 use Encore\Admin\Actions\RowAction;
+use Illuminate\Http\Request;
 
 class Notification extends RowAction
 {
@@ -16,6 +17,9 @@ class Notification extends RowAction
         $message = $request->get('message');
         $notification = new SimpleNotification($message);
         if ($type == 2) {
+            if (!$model->line_user_id) {
+                return $this->response()->error('student has no line_user_id');
+            }
             $notification->viaLine();
         }
         $model->notify($notification);
