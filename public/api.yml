@@ -49,7 +49,7 @@ paths:
               schema:
                 allOf:
                   - { $ref: '#/components/schemas/ApiResponse' }
-                  - { properties: { data: {  } }, type: object }
+                  - { properties: { data: { $ref: '#/components/schemas/UserInterface' } }, type: object }
     post:
       tags:
         - line
