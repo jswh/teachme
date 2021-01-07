@@ -74,7 +74,7 @@ class LineController extends ApiController
      *          allOf={
      *              @OA\Schema(ref="#/components/schemas/ApiResponse"),
      *              @OA\Schema(
-     *                  @OA\Property(property="data", @OA\Schema(ref="#/components/schemas/UserInterface"))
+     *                  @OA\Property(property="data", ref="#/components/schemas/UserInterface")
      *              )
      *          }
      *          )
