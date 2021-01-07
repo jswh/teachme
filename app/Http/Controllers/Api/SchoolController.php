@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
  *      @OA\Property(property="id", type="string"),
  *      @OA\Property(property="name", type="string"),
  *      @OA\Property(property="school_id", type="integer", description="null if is principal"),
- *      @OA\Property(property="username", type="string", desciption="not exists if is teacher"),
+ *      @OA\Property(property="username", type="string", description="not exists if is teacher"),
  *      @OA\Property(property="line_user_id", type="string"),
  * )
  */

@@ -74,7 +74,7 @@ class LineController extends ApiController
      *          allOf={
      *              @OA\Schema(ref="#/components/schemas/ApiResponse"),
      *              @OA\Schema(
-     *                  @OA\Property(property="data", ref="#/components/schemas/UserInterfacte")
+     *                  @OA\Property(property="data", @OA\Schema(ref="#/components/schemas/UserInterfacte"))
      *              )
      *          }
      *          )
@@ -102,7 +102,7 @@ class LineController extends ApiController
     }
 
     /**
-     * @OA\Put(
+     * @OA\Post(
      *     path="/line/bindings",
      *     tags={"line"},
      *     summary="bind account to line account",

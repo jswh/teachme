@@ -49,7 +49,31 @@ paths:
               schema:
                 allOf:
                   - { $ref: '#/components/schemas/ApiResponse' }
-                  - { properties: { data: { $ref: '#/components/schemas/UserInterfacte' } }, type: object }
+                  - { properties: { data: {  } }, type: object }
+    post:
+      tags:
+        - line
+      summary: 'bind account to line account'
+      description: 'bind account to line account'
+      operationId: 'App\Http\Controllers\Api\LineController::getBindings'
+      requestBody:
+        request: 'binding info'
+        description: product_request
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                id_token:
+                  type: string
+              type: object
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineAuthInfo'
 components:
   schemas:
     AuthInfo:
@@ -92,8 +116,8 @@ components:
               description: 'null if is principal'
               type: integer
             username:
+              description: 'not exists if is teacher'
               type: string
-              desciption: 'not exists if is teacher'
             line_user_id:
               type: string
           type: object
