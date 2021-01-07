@@ -10,9 +10,36 @@ use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
+/**
+ * @OA\Schema(
+ *      schema="LineAuthInfo",
+ *      allOf={
+ *          @OA\Schema(ref="#/components/schemas/AuthInfo"),
+ *          @OA\Schema(
+ *              @OA\Property(property="id_token", type="string")
+ *          )
+ *      }
+ * )
+ */
 class LineController extends ApiController
 {
-    public function token($code) {
+    /**
+     * @OA\Get(
+     *     path="/line/token/{code}",
+     *     tags={"line"},
+     *     summary="get auth info of line by code",
+     *     description="get auth info of line by code",
+     *     @OA\Parameter(
+     *         name="code",
+     *         in="path",
+     *         description="the code",
+     *         required=true
+     *     ),
+     *     @OA\Response(response="200", description="success", @OA\JsonContent(ref= "#/components/schemas/LineAuthInfo"))
+     * )
+     */
+    public function token($code)
+    {
         $http = new Client();
         $response = $http->post('https://api.line.me/oauth2/v2.1/token', [
             'proxy' => getenv('proxy'),
@@ -29,7 +56,33 @@ class LineController extends ApiController
         return $body;
     }
 
-    public function bind(Request $request) {
+    /**
+     * @OA\Put(
+     *     path="/line/bindings",
+     *     tags={"line"},
+     *     summary="bind account to line account",
+     *     description="bind account to line account",
+     *     @OA\RequestBody(
+     *          request="binding info",
+     *          required=true,
+     *          description="product_request",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="id_token", type="string")
+     *          )
+     *     ),
+     *     @OA\Response(response="200", description="success", @OA\JsonContent(
+     *          allOf={
+     *              @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *              @OA\Schema(
+     *                  @OA\Property(property="data", ref="#/components/schemas/UserInterfacte")
+     *              )
+     *          }
+     *          )
+     *      )
+     * )
+     */
+    public function bind(Request $request)
+    {
         $idToken = $request->get('id_token');
         $lineUserInfo = $this->parseLineInfo($idToken);
         $lineUserId = $lineUserInfo->sub;
@@ -48,7 +101,25 @@ class LineController extends ApiController
         return $this->success('ok', $user);
     }
 
-    public function getBindings(Request $request) {
+    /**
+     * @OA\Put(
+     *     path="/line/bindings",
+     *     tags={"line"},
+     *     summary="bind account to line account",
+     *     description="bind account to line account",
+     *     @OA\RequestBody(
+     *          request="binding info",
+     *          required=true,
+     *          description="product_request",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="id_token", type="string")
+     *          )
+     *     ),
+     *     @OA\Response(response="200", description="success", @OA\JsonContent(ref= "#/components/schemas/LineAuthInfo"))
+     * )
+     */
+    public function getBindings(Request $request)
+    {
         $idToken = $request->get('id_token');
         $lineUserInfo = $this->parseLineInfo($idToken);
         $lineUserId = $lineUserInfo->sub;
@@ -76,7 +147,8 @@ class LineController extends ApiController
         return $this->success('ok', $bindings);
     }
 
-    public function parseLineInfo($idToken) {
+    public function parseLineInfo($idToken)
+    {
         JWT::$leeway = 60;
         return JWT::decode($idToken, getenv('LINE_SECRET'), ['HS256']);
     }

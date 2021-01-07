@@ -11,9 +11,21 @@ use App\Services\SchoolService;
 use Exception;
 use Illuminate\Http\Request;
 
+/**
+ *
+ * @OA\Schema(
+ *      schema="UserInterface",
+ *      @OA\Property(property="id", type="string"),
+ *      @OA\Property(property="name", type="string"),
+ *      @OA\Property(property="school_id", type="integer", description="null if is principal"),
+ *      @OA\Property(property="username", type="string", desciption="not exists if is teacher"),
+ *      @OA\Property(property="line_user_id", type="string"),
+ * )
+ */
 class SchoolController extends ApiController
 {
-    public function apply(Request $request) {
+    public function apply(Request $request)
+    {
         $user = \Auth::user();
         $params = $request->all();
         \Validator::make($params, [
@@ -24,14 +36,16 @@ class SchoolController extends ApiController
         return $this->success('ok', $school);
     }
 
-    public function makeInviteUrl(School $school) {
+    public function makeInviteUrl(School $school)
+    {
         $this->checkSchoolPrincipal($school);
         $service = new SchoolService($school);
 
         return $this->success('ok', $service->createInviteUrl());
     }
 
-    public function createStudent(School $school, Request $request) {
+    public function createStudent(School $school, Request $request)
+    {
         $this->checkSchoolPrincipal($school);
         $params = $request->all();
         \Validator::make($params, [
@@ -44,13 +58,14 @@ class SchoolController extends ApiController
         return $this->success('ok', $student);
     }
 
-    public function getStudents(School $school, Request $request) {
+    public function getStudents(School $school, Request $request)
+    {
         $this->checkSchoolUser($school);
         if ($request->input('focused', 'false') == 'true') {
             $teacher = \Auth::user();
             $relations = Relation::where('to', $teacher->id)->simplePaginate()->toArray();
             $studentIds = [];
-            foreach($relations['data'] as $relation) {
+            foreach ($relations['data'] as $relation) {
                 $studentIds[] = $relation['from'];
             }
             $relations['data'] = Student::whereIn('id', $studentIds)->get();
@@ -62,19 +77,8 @@ class SchoolController extends ApiController
         return $this->success('ok', $students);
     }
 
-    public function getFocusStudents(School $school) {
-        $this->checkSchoolTeacher($school);
-        /** @var Teacher */
-        $teacher = \Auth::user();
-        # TODO fetch students
-        $relations = Relation::where('to', $teacher->id)->simplePaginate()->data;
-
-        return $this->success('ok', $students);
-
-
-    }
-
-    public function getTeachers(School $school) {
+    public function getTeachers(School $school)
+    {
         $user = \Auth::user();
         $this->checkSchoolUser($school);
         $teachers = Teacher::where('school_id', $school->id)->simplePaginate();
@@ -89,7 +93,8 @@ class SchoolController extends ApiController
         return $this->success('ok', $teachers);
     }
 
-    public function getSchools() {
+    public function getSchools()
+    {
         $user = \Auth::user();
         if ($user->school_id) {
             throw new Exception('should be principal');
@@ -99,14 +104,16 @@ class SchoolController extends ApiController
         return $this->success('ok', $schools);
     }
 
-    protected function checkSchoolPrincipal(School $school) {
+    protected function checkSchoolPrincipal(School $school)
+    {
         $principal = \Auth::user();
         if ($school->creator_id != $principal->id) {
             throw new Exception('should be principal');
         }
     }
 
-    protected function checkSchoolTeacher(School $school) {
+    protected function checkSchoolTeacher(School $school)
+    {
         $user = \Auth::user();
         if (!$user instanceof Teacher) {
             throw new Exception('should be school teacher');
@@ -114,11 +121,11 @@ class SchoolController extends ApiController
         $this->checkSchoolUser($school);
     }
 
-    protected function checkSchoolUser(School $school) {
+    protected function checkSchoolUser(School $school)
+    {
         $user = \Auth::user();
         if ($user->school_id != $school->id && $user->id != $school->creator_id) {
             throw new Exception('should be school ' . class_basename($user));
         }
     }
-
 }
