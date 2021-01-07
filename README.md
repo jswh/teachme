@@ -7,6 +7,7 @@ This project is a small and simple demo to show how I will make a online school 
 # Application Address
 * [SPA](https://teachmespa.herokuapp.com/)
 * [admin](https://teachmenow.herokuapp.com/admin)
+* [API DOC](https://petstore.swagger.io/?url=https://teachmenow.herokuapp.com/api/doc/teachme_adfjiiasdfka)
 # Demo Video
 * Register a principal
 * Create a school

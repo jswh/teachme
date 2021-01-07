@@ -14,14 +14,15 @@ use Illuminate\Routing\Router;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::group(['namespace' => 'Api'], function (Router $router) {
     $router->get('/ping', 'ApiController@ping');
+    $router->get('/doc/{token}', 'ApiController@apiDoc');
 
     $router->get('/line/token/{code}', 'LineController@Token');
     $router->post('/line/bindings', 'LineController@getBindings');
 
     $router->post('/register/principal', 'RegisterController@registerPrinciple');
-
     $router->post('/schools/{school}/teachers', 'RegisterController@registerTeacher');
 
     $router->group(['middleware' => 'auth:api'], function (Router $router) {
@@ -46,4 +47,3 @@ Route::group(['namespace' => 'Api'], function (Router $router) {
         });
     });
 });
-

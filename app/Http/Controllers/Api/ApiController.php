@@ -25,6 +25,14 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
  *      @OA\Property(property="code", type="integer"),
  *      @OA\Property(property="msg", type="string"),
  * )
+ * @OA\Schema(
+ *      schema="UserSchema",
+ *      @OA\Property(property="id", type="string"),
+ *      @OA\Property(property="name", type="string"),
+ *      @OA\Property(property="school_id", type="integer", description="null if is principal"),
+ *      @OA\Property(property="username", type="string", description="not exists if is teacher"),
+ *      @OA\Property(property="line_user_id", type="string"),
+ * )
  */
 class ApiController extends BaseController
 {
@@ -40,6 +48,23 @@ class ApiController extends BaseController
         return $re;
     }
 
+    /**
+     * @OA\Get(
+     *     path="/me",
+     *     tags={"misc"},
+     *     summary="get user info of authed user, and make the user allow chat connection",
+     *     description="get user info of authed user, and make the user allow chat connection",
+     *     @OA\Response(response="200", description="success", @OA\JsonContent(
+     *          allOf={
+     *              @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *              @OA\Schema(
+     *                  @OA\Property(property="data", @OA\Items(ref="#/components/schemas/UserSchema"))
+     *              )
+     *          }
+     *          )
+     *      )
+     * )
+     */
     public function me()
     {
         $user = \Auth::user();
@@ -60,5 +85,13 @@ class ApiController extends BaseController
             var_dump($e);
         }
         return $this->success('ok');
+    }
+
+    public function apiDoc($token) {
+        if ($token = 'teachme_adfjiiasdfka') {
+            $openapi = \OpenApi\scan(app_path('Http/Controllers/Api'));
+            return $openapi->toYaml();
+        }
+        return '!!';
     }
 }

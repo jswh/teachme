@@ -13,12 +13,11 @@ use Illuminate\Support\Facades\Request as FacadesRequest;
 /**
  * @OA\Schema(
  *      schema="LineAuthInfo",
- *      allOf={
- *          @OA\Schema(ref="#/components/schemas/AuthInfo"),
- *          @OA\Schema(
- *              @OA\Property(property="id_token", type="string")
- *          )
- *      }
+ *      @OA\Property(property="id_token", type="string"),
+ *      @OA\Property(property="access_token", type="string"),
+ *      @OA\Property(property="refresh_token", type="string"),
+ *      @OA\Property(property="expire_in", type="integer"),
+ *      @OA\Property(property="token_type", type="string"),
  * )
  */
 class LineController extends ApiController
@@ -102,11 +101,19 @@ class LineController extends ApiController
     }
 
     /**
+     *
+     * @OA\Schema(
+     *      schema="Binding",
+     *      @OA\Property(property="type", type="string"),
+     *      @OA\Property(property="name", type="string"),
+     *      @OA\Property(property="access_token", type="string"),
+     *      @OA\Property(property="user", ref="#/components/schemas/UserSchema"),
+     * )
      * @OA\Post(
      *     path="/line/bindings",
      *     tags={"line"},
-     *     summary="bind account to line account",
-     *     description="bind account to line account",
+     *     summary="get accounts bind with the line account",
+     *     description="get accounts bind with the line account",
      *     @OA\RequestBody(
      *          request="binding info",
      *          required=true,
@@ -115,7 +122,15 @@ class LineController extends ApiController
      *              @OA\Property(property="id_token", type="string")
      *          )
      *     ),
-     *     @OA\Response(response="200", description="success", @OA\JsonContent(ref= "#/components/schemas/LineAuthInfo"))
+     *     @OA\Response(response="200", description="success", @OA\JsonContent(
+     *          allOf={
+     *              @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *              @OA\Schema(
+     *                  @OA\Property(property="data", @OA\Items(ref="#/components/schemas/UserSchema"))
+     *              )
+     *          }
+     *          )
+     *      )
      * )
      */
     public function getBindings(Request $request)

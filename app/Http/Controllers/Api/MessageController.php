@@ -9,13 +9,27 @@ use Illuminate\Http\Request;
 
 class MessageController extends ApiController
 {
-    public function online() {
-        $user = \Auth::user();
-        ChatService::allowChat($user);
 
-        return $this->success('authed');
-    }
-
+    /**
+     * @OA\Post(
+     *     path="/notification",
+     *     tags={"chat"},
+     *     summary="send notification to a student",
+     *     description="send notification to a student",
+     *     @OA\RequestBody(
+     *          request="register info",
+     *          required=true,
+     *          description="register info",
+     *          @OA\JsonContent( @OA\Schema(
+     *              @OA\Property(property="to", type="integer", description="the student id"),
+     *              @OA\Property(property="message", type="string"))
+     *          )
+     *     ),
+     *     @OA\Response(response="200", description="success",
+     *          @OA\JsonContent(ref="#/components/schemas/ApiResponse")
+     *     )
+     * )
+     */
     public function studentNotification(Request $request) {
         $params = $request->all(['to', 'message']);
         $student = Student::findOrFail($params['to']);
