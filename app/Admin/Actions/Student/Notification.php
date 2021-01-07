@@ -17,6 +17,7 @@ class Notification extends RowAction
         $message = $request->get('message');
         $notification = new SimpleNotification($message);
         if ($type == 2) {
+            var_dump($model);
             if (!$model->line_user_id) {
                 return $this->response()->error('student has no line_user_id');
             }
@@ -32,7 +33,7 @@ class Notification extends RowAction
             1 => 'notification',
             2 => 'line message'
         ];
-        $this->checkbox('type', 'type')->options($type);
+        $this->radio('type', 'type')->options($type)->default(1);
         $this->textarea('message', 'message')->rules('required');
     }
 
