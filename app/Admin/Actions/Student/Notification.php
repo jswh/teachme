@@ -17,7 +17,6 @@ class Notification extends RowAction
         $message = $request->get('message');
         $notification = new SimpleNotification($message);
         if ($type == 2) {
-            var_dump($model);
             if (!$model->line_user_id) {
                 return $this->response()->error('student has no line_user_id');
             }
