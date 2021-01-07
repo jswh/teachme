@@ -9,6 +9,8 @@ This project is a small and simple demo to show how I will make a online school 
 * [admin](https://teachmenow.herokuapp.com/admin)
 * [API DOC](https://petstore.swagger.io/?url=https://teachmenow.herokuapp.com/api/doc/teachme_adfjiiasdfka)
 # Demo Video
+[![Demo Video](https://img.youtube.com/vi/TnHXaA-0wZE/0.jpg)](https://www.youtube.com/watch?v=TnHXaA-0wZE)
+
 * Register a principal
 * Create a school
 * Invite a teacher
