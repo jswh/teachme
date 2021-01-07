@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Channels\LineChannel;
 use App\Models\Student;
 use App\Notifications\SimpleNotification;
 use App\Services\ChatService;

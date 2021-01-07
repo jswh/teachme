@@ -105,8 +105,6 @@ components:
     UserInterface:
       allOf:
         -
-          $ref: '#/components/schemas/AuthInfo'
-        -
           properties:
             id:
               type: string

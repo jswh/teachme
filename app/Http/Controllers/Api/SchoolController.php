@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 /**
  *
  * @OA\Schema(
- *      schema="UserInterface",
+ *      schema="UserSchema",
  *      @OA\Property(property="id", type="string"),
  *      @OA\Property(property="name", type="string"),
  *      @OA\Property(property="school_id", type="integer", description="null if is principal"),
