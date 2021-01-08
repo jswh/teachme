@@ -83,7 +83,7 @@ class TeacherController extends AdminController
         }
         $form->saving(function (Form $form) {
             $teacher = Teacher::find($form->id);
-            if (!$teacher || $form->password !== $teacher->password) {
+            if (!$teacher || ($form->password && $form->password !== $teacher->password)) {
                 $form->password = bcrypt($form->password);
             }
         });
@@ -91,7 +91,7 @@ class TeacherController extends AdminController
         $form->email('email', __('Email'));
         $form->select('roles', __('Roles'))->options(ScopeService::selectOptions());
         $form->text('line_user_id', __('Line id'));
-        $form->text('password', __('Password'));
+        $form->password('password', __('New Password'));
 
         return $form;
     }
