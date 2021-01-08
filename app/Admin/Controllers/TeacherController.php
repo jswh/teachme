@@ -91,7 +91,7 @@ class TeacherController extends AdminController
         $form->email('email', __('Email'));
         $form->select('roles', __('Roles'))->options(ScopeService::selectOptions());
         $form->text('line_user_id', __('Line id'));
-        $form->password('password', __('Password'));
+        $form->text('password', __('Password'));
 
         return $form;
     }
