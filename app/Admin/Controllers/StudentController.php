@@ -92,7 +92,7 @@ class StudentController extends AdminController
         $form->text('name', __('Name'));
         $form->text('username', __('Username'));
         $form->text('line_user_id', __('Line id'));
-        $form->text('password', __('New Password'));
+        $form->password('password', __('New Password'));
 
         return $form;
     }
