@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
 {
+    const STATE_PENDING = 0;
+    const STATE_NORMAL = 1;
+
     protected $fillable = ['name', 'description', 'creator_id'];
 
     public function creator() {
